@@ -20,6 +20,7 @@
       </td>
       <td>
         <%= book.body %>
+        本文の感情分析スコア<%= book.score %>
       </td>
       <% if book.favorited_by?(current_user) %>
       <td>

@@ -9,8 +9,13 @@ class BooksController < ApplicationController
 
   def create
     @book = Book.new(book_params)
+    @book.score = Language.get_data(book_params[:body])
+    tags = Vision.get_image_data(book_params[:image])
     @book.user_id = current_user.id
     if @book.save
+      tags.each do |tag|
+        @book.tags.create(name: tag)
+      end
       redirect_to book_path(@book), notice: 'You have created book successfully.'
     else
       @user = current_user
@@ -54,6 +59,6 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :body)
+    params.require(:book).permit(:title, :body, :image)
   end
 end
